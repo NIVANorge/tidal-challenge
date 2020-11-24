@@ -82,8 +82,8 @@ def format_datetime(da,ti,lower=True,inter=5):
             dati_ = (dati + half_int).strftime("%Y-%m-%dT%H:%M")
         return dati_    
     except ValueError:
-        print "Error: Point ",index, " Time: ", row['Time'], " Date: ", row['Date'], " has wrong format"
-        print "Info: Required time format: H:M, required date format: dd.mm.yy"
+        print("Error: Point ",index, " Time: ", row['Time'], " Date: ", row['Date'], " has wrong format")
+        print("Info: Required time format: H:M, required date format: dd.mm.yy")
         if lower==True :
             dati_ = "1000-00-00T00:00"
         else:
@@ -97,7 +97,7 @@ def save_xml(xml_et, filename):
         except IOError as er:
             print(str(er))
     else:
-        print "No valid XML tree"
+        print("No valid XML tree")
 
 def read_xlsx(input_file):
     try:
@@ -150,8 +150,8 @@ for index, row in df.iterrows():
     try:
         rs = rq.get(URL,params=inputs)
     except rq.exceptions.RequestException as er:  
-        print str(er)
-        print "Error: Retrieving data failed "
+        print(str(er))
+        print("Error: Retrieving data failed ")
         chart_datum.at[index] = float('nan')
         continue
 
@@ -161,7 +161,7 @@ for index, row in df.iterrows():
     nPoints  = len(root.findall('.//waterlevel'))
     if nPoints < 1:
         chart_datum.at[index]=float('nan')
-        print "No tidal information for point: ",index, " Time: ", row['Time'], " date: ", row['Date'], "Latitude ", row['GPS Latitude'], "Longitude ", row['GPS Longitude'] 
+        print ("No tidal information for point: ",index, " Time: ", row['Time'], " date: ", row['Date'], "Latitude ", row['GPS Latitude'], "Longitude ", row['GPS Longitude'])
     else:
         for child in root.iter('waterlevel'):
             chart_datum.at[index]=child.attrib['value']
