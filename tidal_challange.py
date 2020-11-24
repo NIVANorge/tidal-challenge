@@ -1,30 +1,10 @@
-## Date:     29.04.2018 
-## Author:   Zofia Czyczula Rudjord
-## Function: This script calculates chart datum using depth measurements from the field and tidal information from API for water level data. 
+## Function: This script calculates chart datum using depth measurements from the field and tidal information from API for water level data.
 ##           Chart datum is added as an extra column to the input file containing measurements and saved in xlsx file for an easy access by the researchers.
 ##           In addition, the complete information retrieved from API is stored in the output XML for further processing if needed.
 ## Usage:    python tidal_challange.py filename.xlsx 
 ## Output:   filename_out.xlsx 
 ##           filename_out.xml 
-##
-##
-## ----------------------------------------------------------------         
-## -----------Notes------------------------------                                                                                                                 
-## ----------------------------------------------------------------
-## Predicted tidal information (PRE) was used instead of the observation (OBS), although according to API the latter is more precise as it includes 
-## weather effects. OBS returned no data for the time interval of 10 min around the measurement point. In addition predicted point closest (in time) to the measurement
-## is used (in case two points are available, the later one is used). Other options (e.g. interpolation/average) are possible. This should be discussed with researchers.
-##
-## The output xml file if exists could be used instead of the call to the water level API (in line of request stated on the webpage to cache the data)
-## This depends on how excetly the script is going to be used ( e.g. how many times it needs to be executed, etc...)
-##
-## For now, only a limited number of exceptions has been tested and are treated: 
-## -- Nulls/Nans on input: if in Time, Date, GPS coord or Depth column, this measurement is removed. Note that measurements are _not_ reindexed.
-## -- Only data as dd.mm.yyyy and time hh:mm are accepted, if a different format is encountered the measurement is skipped. This can be made more general.
-## -- If API not accessible ( tested with internet off ) no tidal info is available and the code terminates with an error message.
-##
-## This script was tested using Python 2.7.10 (no access to Python 3) on Apple 
-##
+
 ## ----------------------------------------------------------------     
 ## -----------Import relevant modules------------------------------
 ## ----------------------------------------------------------------    
@@ -39,13 +19,7 @@ from xml.etree.ElementTree import ElementTree
 from datetime import datetime   ## for formating date and time
 from datetime import timedelta
 from datetime import time
-## ----------------------------------------------------------------                                                                                                               
-## -----------Constants--------------------------------------------                                                                                                                ## ----------------------------------------------------------------  
-## Depth measurements are in [m] (actually this information is not provided anywhere but it is assumed they are)  
-## while tidal info extracted from API is in [cm]
-## Calculated chart datum is in [m]
-## In pratice information on units should be extracted from excel (NA for now) and from api and not hardcoded
-unit        = 100 
+unit        = 100
 ## ----------------------------------------------------------------
 ## -----------Support functions -----------------------------------
 ## ----------------------------------------------------------------
@@ -56,7 +30,6 @@ def repl(x,a,b):
         return x
 
 def format_input(df):
-## Brute force, ok for now, but a more generic version should handle exceptions in a better way
     try:
         df=df.replace(to_replace="<Null>",value="nan")
         df['GPS Longitude'] = df['GPS Longitude'].apply(lambda x: repl(x,',','.'))
@@ -134,10 +107,6 @@ xml_ET      = None                   ## define XML output tree
 chart_datum = pd.Series()            ## array of chart datum
 URL         = "http://api.sehavniva.no/tideapi.php"  ## API URL
 daty        = 'PRE'
-## Loop over measurements. For each measurement point (date, time) extract tidal information by calling API for water level
-## Store tidal information in a series indexed by measurements                                                             
-## If measured point lies exactly in the middle of the time interval, there are two tidal points returned by API.                                                                    
-## For now the later point is used. Other options (such e.g. linear interpolation/average) can be added depending on requested precision              
 
 for index, row in df.iterrows():
 
@@ -157,14 +126,8 @@ for index, row in df.iterrows():
 
 ## Create XML tree from API output string
     root     = ET.fromstring(rs.content)
-## Store tidal values in chart_datum series 
-    nPoints  = len(root.findall('.//waterlevel'))
-    if nPoints < 1:
-        chart_datum.at[index]=float('nan')
-        print ("No tidal information for point: ",index, " Time: ", row['Time'], " date: ", row['Date'], "Latitude ", row['GPS Latitude'], "Longitude ", row['GPS Longitude'])
-    else:
-        for child in root.iter('waterlevel'):
-            chart_datum.at[index]=child.attrib['value']
+    for child in root.iter('waterlevel'):
+        chart_datum.at[index]=child.attrib['value']
 
 ## Store API output in an xml tree 
     for child in root.iter('tide'):
@@ -176,9 +139,6 @@ for index, row in df.iterrows():
 ## ----------------------------------------------------------------     
 ## -----------Store results----------------------------------------  
 ## ----------------------------------------------------------------     
-
-## Derive output file names 
-## Ok for now but a generic version should allow for different input and output paths as well as a more robust deriviation of output filenames. 
 name=input_file[:-5]
 output_file1=name+"_out.xml"
 output_file2=name+"_out.xlsx"
@@ -190,8 +150,6 @@ if(chart_datum.isnull().all()):
 ## Save API output in xml file
 save_xml(xml_ET, output_file1)
 
-## Format tidal information, calculate chart datum and add it as an extra column to the existing data
-## Note: measurements are not re-indexed after removing Nulls from the input
 chart_datum     = chart_datum.apply(pd.to_numeric)            ## convert string to numerical values
 dpth            = pd.Series(df['depth'])                      ## convert depth info to a series
 chart_datum     = -chart_datum/unit + dpth                    ## calculate chart datum
