@@ -1,29 +1,10 @@
 ## Date:     29.04.2018 
-## Author:   Zofia Czyczula Rudjord
-## Function: This script calculates chart datum using depth measurements from the field and tidal information from API for water level data. 
+## Function: This script calculates chart datum using depth measurements from the field and tidal information from API for water level data.
 ##           Chart datum is added as an extra column to the input file containing measurements and saved in xlsx file for an easy access by the researchers.
 ##           In addition, the complete information retrieved from API is stored in the output XML for further processing if needed.
 ## Usage:    python tidal_challange.py filename.xlsx 
 ## Output:   filename_out.xlsx 
 ##           filename_out.xml 
-##
-##
-## ----------------------------------------------------------------         
-## -----------Notes------------------------------                                                                                                                 
-## ----------------------------------------------------------------
-## Predicted tidal information (PRE) was used instead of the observation (OBS), although according to API the latter is more precise as it includes 
-## weather effects. OBS returned no data for the time interval of 10 min around the measurement point. In addition predicted point closest (in time) to the measurement
-## is used (in case two points are available, the later one is used). Other options (e.g. interpolation/average) are possible. This should be discussed with researchers.
-##
-## The output xml file if exists could be used instead of the call to the water level API (in line of request stated on the webpage to cache the data)
-## This depends on how excetly the script is going to be used ( e.g. how many times it needs to be executed, etc...)
-##
-## For now, only a limited number of exceptions has been tested and are treated: 
-## -- Nulls/Nans on input: if in Time, Date, GPS coord or Depth column, this measurement is removed. Note that measurements are _not_ reindexed.
-## -- Only data as dd.mm.yyyy and time hh:mm are accepted, if a different format is encountered the measurement is skipped. This can be made more general.
-## -- If API not accessible ( tested with internet off ) no tidal info is available and the code terminates with an error message.
-##
-## This script was tested using Python 2.7.10 (no access to Python 3) on Apple 
 ##
 ## ----------------------------------------------------------------     
 ## -----------Import relevant modules------------------------------
