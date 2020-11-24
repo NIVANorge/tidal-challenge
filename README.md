@@ -8,4 +8,8 @@ The original task description is provided in [task.md](./task.md).
 
 Submit a code review on the pull request. The code example is real and we want you you give constructive feedback on the solution. Please use the github pull request commenting system. 
 
+In addition, we would like to you give some remarks the following:
+- How can the code be improved
+- what are the limitations of the provided solution
+
 PS: remember to click **submit review** when you are done. If not, comments are not visible for others.
