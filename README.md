@@ -1,38 +1,17 @@
-# Tidal adjustment of depth data
+## Tidal challenge code review task
 
-The purpose of this repo is to be used as a coding challenge during interviews.
+You are given a code solution and we want you to perform a code review. We do not expect you to write your own code, just comment on the existing one.
 
-## Description
+The original task description is provided in [task.md](./task.md).
 
-When our researchers are in the field they often collect data with depth information/measurements.
-These depth measurements are simply taken by the researcher/field technician in the field, and they are
-thus not adjusted and referenced to chart datum (Norwegian “sjøkartnull”).
-The data is usually punched in manually in an MS Excel spreadsheet for further processing (typically one
-row pr. observation), etc.
-
-## Task
-
-Using the supplied Excel file (tidal_sample.xlsx) with depth data (one observation pr. row) you should write a script
-in a language of your choice which:
-- Reads the excel file with sample data
-- relevant columns:
-  - Date
-  - Time
-  - GPS Latitude
-  - GPS Longitude
-  - depth
-- Use the API from the Norwegian mapping authority (Kartverket) to find the water level for each observation with reference to chart datum (sjøkartnull)
-- Calculate chart datum (sjøkartnull) referenced sampling depth for each data row in the spreadsheet
-- Return the result in an appropriate format for further processing
-  - For yourself
-  - For the researcher producing the data
-
-The API for tidal water level adjustment is described here: http://api.sehavniva.no/tideapi_en.html
-
-You can assume the following:
-  - All time stamps are from the Norwegian time zone (i.e. "Europe/Oslo" including daylight saving time).
-  - The coordinates are in WGS84 coordinate system (standard for GPS)
+Treat this as a code review as if it was a real code review with a colleague you work with closely. We don't expect you to spend more than 2 hours on the review.
 
 ## Deliverables
 
-Please bring the code (either on your own machine or do a private github fork) and prepare a short oral presentation of your work in the interview.
+Submit a code review on the pull request. The code example is real and we want you you give constructive feedback on the solution. Please use the github pull request commenting system. 
+
+In addition, we would like to you give some remarks the following:
+- How can the code be improved
+- what are the limitations of the provided solution
+
+PS: remember to click **submit review** when you are done. If not, comments are not visible for others.
