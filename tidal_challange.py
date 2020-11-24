@@ -20,12 +20,7 @@ from xml.etree.ElementTree import ElementTree
 from datetime import datetime   ## for formating date and time
 from datetime import timedelta
 from datetime import time
-## ----------------------------------------------------------------                                                                                                               
-## -----------Constants--------------------------------------------                                                                                                                ## ----------------------------------------------------------------  
-## Depth measurements are in [m] (actually this information is not provided anywhere but it is assumed they are)  
-## while tidal info extracted from API is in [cm]
-## Calculated chart datum is in [m]
-## In pratice information on units should be extracted from excel (NA for now) and from api and not hardcoded
+
 unit        = 100 
 ## ----------------------------------------------------------------
 ## -----------Support functions -----------------------------------
