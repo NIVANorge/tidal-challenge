@@ -4,7 +4,7 @@ You are given a code solution and we want you to perform a code review. We do no
 
 The original task description is provided in [task.md](./task.md).
 
-Treat this as a code review as if it was a real code review with a colleague you work with closely. We don't expect you to spend more than 2 hours on the review.
+Treat this as a code review as if it was a real code review with a colleague you work with closely. We don't expect you to spend more than one hour on the review.
 
 ## Deliverables
 
